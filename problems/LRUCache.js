@@ -1,11 +1,13 @@
 let cache;
+let accessed;
 let capacity;
 /**
  * @param {number} cap
  */
 const LRUCache = function(cap) {
   capacity = cap;
-  cache = new Map()
+  cache = new Map();
+  accessed = new Set();
 };
 
 /**
@@ -14,8 +16,9 @@ const LRUCache = function(cap) {
  */
 /*LRUCache.prototype.*/const get = function(key) {
   if (cache.has(key)) {
-    updateLRU(key);
-    return cache.get(key).value;
+    accessed.delete(key);
+    accessed.add(key);
+    return cache.get(key);
   } else {
     return -1;
   }
@@ -27,23 +30,15 @@ const LRUCache = function(cap) {
  * @return {void}
  */
 /*LRUCache.prototype. */const put = function(key, value) {
-  updateLRU(key);
-  cache.set(key, {age: 0, value});
-  if (cache.size > capacity) {
-    let oldest = 0;
-    let key;
-    for(let [k, val] of cache) {
-      if (val.age > oldest) {
-        oldest = val.age;
-        key = k;
-      }
-    }
-    if (key) {
-      cache.delete(key);
-    } else {
-      console.log('key to delete was null');
-    }
+  if (!cache.has(key) && cache.size >= capacity) {
+    const last = [...accessed][0];
+    cache.delete(last);
+    accessed.delete(last);
+  } else if (cache.has(key)) {
+    accessed.delete(key);
   }
+  cache.set(key, value);
+  accessed.add(key);
 };
 
 /**
@@ -52,26 +47,13 @@ const LRUCache = function(cap) {
  * var param_1 = obj.get(key)
  * obj.put(key,value)
  */
-const updateLRU = function(key) {
-  for(let [k, val] of cache) {
-    if (k === key) {
-      val.age = 0;
-    } else {
-      val.age += 1;
-    }
-  }
-};
 
 let result;
 LRUCache(2);
 get(2);
 put(2, 1);
 put(1, 1);
-result = get(2);
+put(2, 3);
 put(4, 1);
 result = get(1);
 result = get(2);
-put(4, 4);
-result = get(1);
-result = get(3);
-result = get(4);
