@@ -31,7 +31,7 @@ const LRUCache = function(cap) {
  */
 /*LRUCache.prototype. */const put = function(key, value) {
   if (!cache.has(key) && cache.size >= capacity) {
-    const last = [...accessed][0];
+    accessed.next();
     cache.delete(last);
     accessed.delete(last);
   } else if (cache.has(key)) {
