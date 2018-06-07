@@ -1,16 +1,15 @@
-const i = [];
-let currentArr = 0;
-let arrs = [];
-
 /**
  * @constructor
  * @param {[number []]} args
  */
-var ZigzagIterator = function ZigzagIterator(...args) {
+var ZigzagIterator = function ZigzagIterator(...args) {const i = [];
+  this.currentArr = 0;
+  this.arrs = [];
+  this.i = [];
   for (let j = 0; j < args.length; j++) {
     if (args[j].length) {
-      i[j] = 0;
-      arrs[j] = args[j];
+      this.i[j] = 0;
+      this.arrs[j] = args[j];
     } else {
       args.splice(j, 1);
       j -= 1;
@@ -23,7 +22,7 @@ var ZigzagIterator = function ZigzagIterator(...args) {
  * @returns {boolean}
  */
 ZigzagIterator.prototype.hasNext = function hasNext() {
-  return arrs.length > 0;
+  return this.arrs.length > 0;
 };
 
 /**
@@ -31,19 +30,19 @@ ZigzagIterator.prototype.hasNext = function hasNext() {
  * @returns {number}
  */
 ZigzagIterator.prototype.next = function next() {
-  const ret = arrs[currentArr][i[currentArr]];
-  i[currentArr] += 1;
-  if (i[currentArr] === arrs[currentArr].length) {
-    arrs.splice(currentArr, 1);
-    i.splice(currentArr, 1);
-    if (currentArr === arrs.length) {
-      currentArr = 0;
+  const ret = this.arrs[this.currentArr][this.i[this.currentArr]];
+  this.i[this.currentArr] += 1;
+  if (this.i[this.currentArr] === this.arrs[this.currentArr].length) {
+    this.arrs.splice(this.currentArr, 1);
+    this.i.splice(this.currentArr, 1);
+    if (this.currentArr === this.arrs.length) {
+      this.currentArr = 0;
     }
   } else {
-    if (currentArr === arrs.length - 1) {
-      currentArr = 0;
+    if (this.currentArr === this.arrs.length - 1) {
+      this.currentArr = 0;
     } else {
-      currentArr++;
+      this.currentArr++;
     }
   }
 
