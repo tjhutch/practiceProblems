@@ -17,6 +17,7 @@ function lengthLongestPath(input) {
   }
   let level = 0;
   let longestFilePath = '';
+  // we will save a running sum of the length of each folder in the current path here
   let path = [];
   let leftover = '';
   for (let i = 0; i < splitInput.length; i++) {
@@ -25,8 +26,9 @@ function lengthLongestPath(input) {
       level = 0;
       continue;
     }
+    // case for using tabs
     if (val.startsWith('\t')) {
-      // edge case: spaces after max allowable indentation should be considered part of next file name
+      // edge case: spaces after a tab character should be considered part of next file name
       if (!/^\t+$/.test(val)) {
         leftover = val.slice(val.indexOf(' '));
         level = val.slice(0, val.indexOf(' ')).length;
@@ -34,8 +36,10 @@ function lengthLongestPath(input) {
         level = val.length;
       }
       continue;
+      // case for using spaces
     } else if (val.startsWith('    ')) {
       const levelTemp = val.length / 4;
+      // if there are more spaces than there should be, they're part of a filename. save in leftover
       if (levelTemp > level + 1) {
         level += 1;
         leftover = val.slice(4);
@@ -44,20 +48,25 @@ function lengthLongestPath(input) {
       }
       continue;
     }
+    // if we have leftover spaces, prepend them
     if (leftover.length) {
       val = leftover + val;
       leftover = '';
     }
+    // only check length of complete files (will have a suffix)
     if (val.includes('.')) {
       let runningTotal = path[0];
+      // add all the slashes needed for the current file level
       for (let j = 1; j < level; j++) {
         runningTotal += `/${path[j]}`;
       }
       runningTotal += `/${val}`;
+      // if the length is longer, we have a new longest file path
       if (runningTotal.length > longestFilePath.length) {
         longestFilePath = runningTotal;
       }
     } else {
+      // if it's a folder, save it's length in the path
       path[level] = val;
     }
   }

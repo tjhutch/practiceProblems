@@ -16,6 +16,7 @@ const LRUCache = function(cap) {
  */
 /*LRUCache.prototype.*/const get = function(key) {
   if (cache.has(key)) {
+    // move this key to most recently accessed by deleting/re-adding to accessed set
     accessed.delete(key);
     accessed.add(key);
     return cache.get(key);
@@ -31,10 +32,13 @@ const LRUCache = function(cap) {
  */
 /*LRUCache.prototype. */const put = function(key, value) {
   if (!cache.has(key) && cache.size >= capacity) {
-    accessed.next();
+    // if above capacity, delete the least recently accessed. This will be the last item in the set,
+    // as new items are added to the front
+    const last = [...accessed][0];
     cache.delete(last);
     accessed.delete(last);
   } else if (cache.has(key)) {
+    // if we already had this item, re-up it's last access time
     accessed.delete(key);
   }
   cache.set(key, value);
