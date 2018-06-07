@@ -2,7 +2,7 @@
  * @constructor
  * @param {[number []]} args
  */
-var ZigzagIterator = function ZigzagIterator(...args) {const i = [];
+var ZigzagIterator = function ZigzagIterator(...args) {
   this.currentArr = 0;
   this.arrs = [];
   this.i = [];
