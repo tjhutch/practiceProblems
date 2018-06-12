@@ -10,47 +10,39 @@
  */
 const numIslands = function (grid) {
   let count = 0;
-  const visited = [];
-  for(let i = 0; i < grid.length; i++) {
-    visited[i] = [];
-  }
 
   for(let i = 0; i < grid.length; i++) {
     for(let j = 0; j < grid[i].length; j++) {
-      if (!visited[i][j]) {
-        if (grid[i][j] === '1') {
-          visitNeighbors(i, j, grid, visited);
-          count += 1;
-        } else {
-          visited[i][j] = true;
-        }
+      if (grid[i][j] === '1') {
+        visitNeighbors(i, j, grid);
+        count += 1;
       }
     }
   }
   return count;
 };
 
-const visitNeighbors = function(i, j, grid, visited) {
-  visited[i][j] = true;
+const visitNeighbors = function(i, j, grid) {
   // exit condition - current location is 0
   if (grid[i][j] === '0') {
     return;
   }
+  grid[i][j] = '0';
   // check left
-  if (j > 0 && !visited[i][j - 1]) {
-    visitNeighbors(i, j - 1, grid, visited);
+  if (j > 0) {
+    visitNeighbors(i, j - 1, grid);
   }
   // check up
-  if (i > 0 && !visited[i - 1][j]) {
-    visitNeighbors(i - 1, j, grid, visited);
+  if (i > 0) {
+    visitNeighbors(i - 1, j, grid);
   }
   // check right
-  if (j < grid[i].length && !visited[i][j + 1]) {
-    visitNeighbors(i, j + 1, grid, visited);
+  if (j < grid[i].length - 1) {
+    visitNeighbors(i, j + 1, grid);
   }
   // check down
-  if (i < grid.length - 1 && !visited[i + 1][j]) {
-    visitNeighbors(i + 1, j, grid, visited);
+  if (i < grid.length - 1) {
+    visitNeighbors(i + 1, j, grid);
   }
 };
 
