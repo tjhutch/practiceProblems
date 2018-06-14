@@ -26,12 +26,13 @@ var wordsTyping = function(sentence, rows, cols) {
     while (curLength < cols) {
       if (word === 0 && cols - curLength >= sentenceLength) {
         let numSentences = Math.floor((cols - curLength) / (sentenceLength + 1));
+        if (numSentences === 0) {
+          // space enough for exactly 1
+          sentences++;
+          break;
+        }
         curLength += (sentenceLength + 1) * numSentences;
         sentences += numSentences;
-        // insert space after sentence
-        if (curLength < cols && numSentences === 1) {
-          curLength += 1;
-        }
         continue;
       }
       nextLength = curLength + sentence[word].length;
@@ -55,5 +56,6 @@ var wordsTyping = function(sentence, rows, cols) {
   return sentences;
 };
 
-const sentence = ['try', 'to', 'be', 'better'];
-console.log(wordsTyping(sentence, 10000, 9001));
+const sentence = ["f","p","a"];
+console.log(wordsTyping(sentence, 8, 7));
+// ['try', 'to', 'be', 'better']; 10000 9001
