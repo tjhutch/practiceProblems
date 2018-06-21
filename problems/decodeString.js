@@ -13,8 +13,8 @@ var decodeString = function (s) {
   let result = '';
   let temp = '';
   for (let i = 0; i < s.length; i++) {
-    const char = s.charAt(i);
-    // start of  sub-string OR sub-string of sub-string
+    const char = s[i];
+    // start of sub-string OR sub-string of sub-string
     if (char === '[') {
       // if this is the first open, start a new sub string
       if (!stack.length) {
